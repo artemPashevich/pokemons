@@ -13,12 +13,7 @@ protocol PokemonsViewProtocol: AnyObject {
     func showError(_ message: String)
 }
 
-protocol PokemonsfetchProtocol: AnyObject {
-    func fetchPokemons()
-}
-
-
-final class PokemonsViewController: UIViewController, PokemonsfetchProtocol {
+final class PokemonsViewController: UIViewController {
 
     @IBOutlet var collectionPokemon: UICollectionView!
     let loadingIndicator = UIActivityIndicatorView(style: .large)
@@ -33,7 +28,7 @@ final class PokemonsViewController: UIViewController, PokemonsfetchProtocol {
     
     func fetchPokemons() {
         showLoading()
-        Manager.shared.getListName { [weak self] pokemons, error in
+        NetworkManager.shared.getPokemonList { [weak self] pokemons, error in
             guard let self = self else {
                 return
             }

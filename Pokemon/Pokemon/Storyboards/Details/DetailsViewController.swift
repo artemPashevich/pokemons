@@ -22,7 +22,7 @@ final class DetailsViewController: UIViewController {
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
-    var id: Int!
+    var id: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +46,7 @@ extension DetailsViewController: DetailsViewProtocol {
         typesLabel.text = pokemon.types
         heightLabel.text = pokemon.height
 
-        Manager.shared.loadImageFromURL(url: pokemon.imageUrl) { [weak self] image in
+        NetworkManager.shared.loadImage(fromURL: pokemon.imageUrl) { [weak self] image in
             DispatchQueue.main.async {
                 self?.pokemonImageView.image = image
             }
@@ -65,7 +65,7 @@ extension DetailsViewController: DetailsViewProtocol {
 extension DetailsViewController {
     private func setup() {
         showLoading()
-        Manager.shared.getDetailsInfo(id: id) { [weak self] json, error in
+        NetworkManager.shared.getPokemonDetails(withId: id) { [weak self] json, error in
         guard let self = self else { return }
         self.hideLoading()
         if let json = json {

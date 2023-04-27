@@ -16,7 +16,7 @@
 		A50496BF29C21C8A00DF9FC4 /* PokemonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50496BE29C21C8A00DF9FC4 /* PokemonTests.swift */; };
 		A50496C929C21C8A00DF9FC4 /* PokemonUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50496C829C21C8A00DF9FC4 /* PokemonUITests.swift */; };
 		A50496CB29C21C8A00DF9FC4 /* PokemonUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50496CA29C21C8A00DF9FC4 /* PokemonUITestsLaunchTests.swift */; };
-		A50496DA29C224DD00DF9FC4 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50496D929C224DD00DF9FC4 /* Manager.swift */; };
+		A50496DA29C224DD00DF9FC4 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50496D929C224DD00DF9FC4 /* DatabaseManager.swift */; };
 		A50496DC29C3379400DF9FC4 /* PokemonStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50496DB29C3379400DF9FC4 /* PokemonStruct.swift */; };
 		A50496DF29C33DC000DF9FC4 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A50496DE29C33DC000DF9FC4 /* Alamofire */; };
 		A50496E129C3C81000DF9FC4 /* PokemonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50496E029C3C81000DF9FC4 /* PokemonCollectionViewCell.swift */; };
@@ -24,6 +24,10 @@
 		A50496EE29C4782900DF9FC4 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50496ED29C4782900DF9FC4 /* DetailsViewController.swift */; };
 		A50496F129C565C200DF9FC4 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = A50496F029C565C200DF9FC4 /* Realm */; };
 		A50496F329C565C200DF9FC4 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A50496F229C565C200DF9FC4 /* RealmSwift */; };
+		A50627C729F2477C00F11598 /* ReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50627C629F2477C00F11598 /* ReachabilityManager.swift */; };
+		A50627C929F2479800F11598 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50627C829F2479800F11598 /* NetworkManager.swift */; };
+		A50627CC29F2491200F11598 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = A50627CB29F2491200F11598 /* Reachability */; };
+		A50627CE29F8D51700F11598 /* DataFetcherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50627CD29F8D51700F11598 /* DataFetcherManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,10 +61,13 @@
 		A50496C429C21C8A00DF9FC4 /* PokemonUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PokemonUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A50496C829C21C8A00DF9FC4 /* PokemonUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonUITests.swift; sourceTree = "<group>"; };
 		A50496CA29C21C8A00DF9FC4 /* PokemonUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		A50496D929C224DD00DF9FC4 /* Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
+		A50496D929C224DD00DF9FC4 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		A50496DB29C3379400DF9FC4 /* PokemonStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonStruct.swift; sourceTree = "<group>"; };
 		A50496E029C3C81000DF9FC4 /* PokemonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonCollectionViewCell.swift; sourceTree = "<group>"; };
 		A50496ED29C4782900DF9FC4 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		A50627C629F2477C00F11598 /* ReachabilityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityManager.swift; sourceTree = "<group>"; };
+		A50627C829F2479800F11598 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		A50627CD29F8D51700F11598 /* DataFetcherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFetcherManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +77,7 @@
 			files = (
 				A50496F329C565C200DF9FC4 /* RealmSwift in Frameworks */,
 				A50496F129C565C200DF9FC4 /* Realm in Frameworks */,
+				A50627CC29F2491200F11598 /* Reachability in Frameworks */,
 				A50496EC29C4751400DF9FC4 /* SwiftyJSON in Frameworks */,
 				A50496DF29C33DC000DF9FC4 /* Alamofire in Frameworks */,
 			);
@@ -164,7 +172,10 @@
 		A50496E429C4452B00DF9FC4 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				A50496D929C224DD00DF9FC4 /* Manager.swift */,
+				A50496D929C224DD00DF9FC4 /* DatabaseManager.swift */,
+				A50627C629F2477C00F11598 /* ReachabilityManager.swift */,
+				A50627C829F2479800F11598 /* NetworkManager.swift */,
+				A50627CD29F8D51700F11598 /* DataFetcherManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -232,6 +243,7 @@
 				A50496EB29C4751400DF9FC4 /* SwiftyJSON */,
 				A50496F029C565C200DF9FC4 /* Realm */,
 				A50496F229C565C200DF9FC4 /* RealmSwift */,
+				A50627CB29F2491200F11598 /* Reachability */,
 			);
 			productName = Pokemon;
 			productReference = A50496A429C21C8800DF9FC4 /* Pokemon.app */;
@@ -309,6 +321,7 @@
 				A50496DD29C33DC000DF9FC4 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				A50496EA29C4751400DF9FC4 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				A50496EF29C565C200DF9FC4 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				A50627CA29F2491200F11598 /* XCRemoteSwiftPackageReference "Reachability" */,
 			);
 			productRefGroup = A50496A529C21C8800DF9FC4 /* Products */;
 			projectDirPath = "";
@@ -353,13 +366,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A50627C929F2479800F11598 /* NetworkManager.swift in Sources */,
+				A50627CE29F8D51700F11598 /* DataFetcherManager.swift in Sources */,
+				A50627C729F2477C00F11598 /* ReachabilityManager.swift in Sources */,
 				A50496DC29C3379400DF9FC4 /* PokemonStruct.swift in Sources */,
 				A50496AC29C21C8800DF9FC4 /* PokemonsViewController.swift in Sources */,
 				A50496A829C21C8800DF9FC4 /* AppDelegate.swift in Sources */,
 				A50496AA29C21C8800DF9FC4 /* SceneDelegate.swift in Sources */,
 				A50496EE29C4782900DF9FC4 /* DetailsViewController.swift in Sources */,
 				A50496E129C3C81000DF9FC4 /* PokemonCollectionViewCell.swift in Sources */,
-				A50496DA29C224DD00DF9FC4 /* Manager.swift in Sources */,
+				A50496DA29C224DD00DF9FC4 /* DatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -727,6 +743,14 @@
 				kind = branch;
 			};
 		};
+		A50627CA29F2491200F11598 /* XCRemoteSwiftPackageReference "Reachability" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -749,6 +773,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A50496EF29C565C200DF9FC4 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		A50627CB29F2491200F11598 /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A50627CA29F2491200F11598 /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

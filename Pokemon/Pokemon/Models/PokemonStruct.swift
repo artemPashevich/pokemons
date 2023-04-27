@@ -14,7 +14,7 @@ import RealmSwift
     dynamic var url: String?
 }
 
-class CachedPokemonDetails: Object {
+class CachedPokemonDetails: Object, Codable {
     @objc dynamic var id = 0
     @objc dynamic var detailsData = Data()
 
@@ -22,7 +22,6 @@ class CachedPokemonDetails: Object {
         return "id"
     }
 }
-
 
 struct PokemonResponse: Codable {
     let count: Int
