@@ -12,7 +12,7 @@ import UIKit
 
 protocol NetworkProtocol {
     func getPokemonList(completion: @escaping (_ pokemons: [Pokemon]?, _ error: String?) -> Void)
-    func getPokemonDetails(withId id: Int, completion: @escaping (CachedPokemonDetails?, String?) -> Void)
+    func getPokemonDetails(withId id: Int, completion: @escaping (JSON?, String?) -> Void)
     func loadImage(fromURL url: URL, completion: @escaping (UIImage?) -> Void)
 }
 
@@ -43,14 +43,14 @@ class NetworkManager: NetworkProtocol {
             }
     }
 
-    func getPokemonDetails(withId id: Int, completion: @escaping (CachedPokemonDetails?, String?) -> Void) {
+    func getPokemonDetails(withId id: Int, completion: @escaping (JSON?, String?) -> Void) {
         let url = backendUrl + "/\(id)"
         AF.request(url)
             .responseData { response in
                 switch response.result {
                 case .success(let data):
                     do {
-                        let response = try JSONDecoder().decode(CachedPokemonDetails.self, from: data)
+                        let response = try JSONDecoder().decode(JSON.self, from: data)
                         completion(response, nil)
                     } catch {
                         let error = "error decode json"
@@ -63,26 +63,18 @@ class NetworkManager: NetworkProtocol {
     }
 
     func loadImage(fromURL url: URL, completion: @escaping (UIImage?) -> Void) {
-        let request = URLRequest(url: url)
-        let cache = URLCache.shared
-        if let cachedResponse = cache.cachedResponse(for: request) {
-            if let image = UIImage(data: cachedResponse.data) {
-                completion(image)
-                return
+        AF.download(url).responseData { response in
+            switch response.result {
+            case .success(let data):
+                if let image = UIImage(data: data) {
+                    completion(image)
+                } else {
+                    completion(nil)
+                }
+            case .failure:
+                completion(nil)
             }
         }
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            guard error == nil, let data = data, let response = response else {
-                completion(nil)
-                return
-            }
-            cache.storeCachedResponse(CachedURLResponse(response: response, data: data), for: request)
-            if let image = UIImage(data: data) {
-                completion(image)
-            } else {
-                completion(nil)
-            }
-        }.resume()
     }
 }
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 protocol PokemonsViewProtocol: AnyObject {
     func showLoading()
@@ -19,7 +20,7 @@ final class PokemonsViewController: UIViewController {
     let loadingIndicator = UIActivityIndicatorView(style: .large)
     
     var pokemonsGroups: [Pokemon]?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLoadingIndicator()
@@ -27,8 +28,9 @@ final class PokemonsViewController: UIViewController {
     }
     
     func fetchPokemons() {
+        let dataFetcherManager = DataFetcherManager()
         showLoading()
-        NetworkManager.shared.getPokemonList { [weak self] pokemons, error in
+        dataFetcherManager.getPokemonList { [weak self] pokemons, error in
             guard let self = self else {
                 return
             }

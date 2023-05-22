@@ -37,9 +37,8 @@ class ReachabilityManager: ReachabilityProtocol {
             return
         }
         if reachability.connection == .unavailable {
-            print("Network not reachable")
         } else {
-            print("Network reachable")
+//            print("Network reachable")
         }
     }
     
