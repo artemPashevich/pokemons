@@ -38,11 +38,13 @@ class CachedPokemonDetails: Object, Codable {
         self.init()
         self.id = json["id"].intValue
         self.name = json["name"].stringValue
-        self.imageUrlString = json["sprites"]["back_default"].stringValue
+        
         if online {
             self.types = json["types"][0]["type"]["name"].stringValue
+            self.imageUrlString = json["sprites"]["back_default"].stringValue
         } else {
             self.types = json["types"].stringValue
+            self.imageUrlString = json["imageUrlString"].stringValue
         }
         
         self.weight = json["weight"].stringValue

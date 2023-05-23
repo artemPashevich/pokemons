@@ -47,8 +47,9 @@ extension DetailsViewController: DetailsViewProtocol {
         weightLabel.text = pokemon.weight
         typesLabel.text = pokemon.types
         heightLabel.text = pokemon.height
-        
-        dataFetcherManager.loadImageFromURL(url: pokemon.imageUrl) { [weak self] image, error  in
+        print(pokemon.height)
+        print(pokemon.imageUrlString)
+        dataFetcherManager.loadImageFromURL(urlString: pokemon.imageUrlString) { [weak self] image, error  in
             self?.pokemonImageView.image = image
         }
     }
@@ -64,14 +65,11 @@ extension DetailsViewController {
     private func setup() {
         showLoading()
         dataFetcherManager.getPokemonDetails(id: id) { [weak self] json, error, track  in
-            guard let self = self else {
-                return
-            }
-            self.hideLoading()
+            self?.hideLoading()
             if let json = json, let track = track {
-                self.configureUI(with: CachedPokemonDetails(json: json, online: track))
+                self?.configureUI(with: CachedPokemonDetails(json: json, online: track))
             } else if let error = error {
-                self.showError(error.description)
+                self?.showError(error.description)
             }
         }
     }

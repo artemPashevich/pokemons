@@ -20,6 +20,7 @@ final class PokemonsViewController: UIViewController {
     let loadingIndicator = UIActivityIndicatorView(style: .large)
     
     var pokemonsGroups: [Pokemon]?
+    let dataFetcherManager = DataFetcherManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,18 +29,14 @@ final class PokemonsViewController: UIViewController {
     }
     
     func fetchPokemons() {
-        let dataFetcherManager = DataFetcherManager()
         showLoading()
-        dataFetcherManager.getPokemonList { [weak self] pokemons, error in
-            guard let self = self else {
-                return
-            }
-            self.hideLoading()
+        dataFetcherManager.getPokemonsFromAPI { [weak self] pokemons, error in
+            self?.hideLoading()
             if let error = error {
-                self.showError(error.description)
+                self?.showError(error.description)
             } else {
-                self.pokemonsGroups = pokemons
-                self.collectionPokemon.reloadData()
+                self?.pokemonsGroups = pokemons
+                self?.collectionPokemon.reloadData()
             }
         }
     }

@@ -21,9 +21,9 @@ final class DataFetcherManager {
         reachabilityManager = ReachabilityManager()
     }
     
-    func getPokemonList(completion: @escaping (_ pokemons: [Pokemon]?, _ error: String?) -> Void) {
+    func getPokemonsFromAPI(completion: @escaping (_ pokemons: [Pokemon]?, _ error: String?) -> Void) {
         if reachabilityManager.isNetworkAvailable {
-            networkManager.getPokemonList { [weak self] (pokemons, error) in
+            networkManager.getPokemonList { [weak self] pokemons, error in
                 if let error = error {
                     completion(nil, error)
                 } else if let pokemons = pokemons {
@@ -33,7 +33,6 @@ final class DataFetcherManager {
             }
         } else {
             let pokemons = databaseManager.getPokemons()
-            print(pokemons)
             if pokemons.isEmpty {
                 completion(nil, "no internet connection")
             } else {
@@ -61,27 +60,27 @@ final class DataFetcherManager {
         }
     }
     
-    func loadImageFromURL(url: URL?, completion: @escaping (UIImage?, String?) -> Void) {
-        guard let url = url else {
-            completion(UIImage(named: "default"), "Invalid image URL")
-            return
-        }
-        
-        if let imageData = databaseManager.getCachedImageData(forKey: url.absoluteString),
-           let image = UIImage(data: imageData) {
-            completion(image, nil)
-            return
-        }
-        
-        networkManager.loadImage(fromURL: url) { [weak self] image in
-            if let image = image {
-
-                if let imageData = image.pngData() {
-                    self?.databaseManager.saveImageData(imageData, forKey: url.absoluteString)
+    func loadImageFromURL(urlString: String?, completion: @escaping (UIImage?, String?) -> Void) {
+        guard let urlString = urlString  else { return }
+        print("URL: " + urlString)
+        if reachabilityManager.isNetworkAvailable {
+            guard let url = URL(string: urlString) else { return }
+            networkManager.loadImage(fromURL: url) { [weak self] image in
+                if let image = image {
+                    if let imageData = image.pngData() {
+                        self?.databaseManager.saveImageData(imageData, forKey: urlString)
+                        completion(image, nil)
+                    }
+                } else {
+                    completion(UIImage(named: "default"), "Failed to load image")
                 }
+            }
+        } else {
+            if let imageData = databaseManager.getCachedImageData(forKey: urlString),
+               let image = UIImage(data: imageData) {
                 completion(image, nil)
             } else {
-                completion(UIImage(named: "default"), "Failed to load image")
+                completion(UIImage(named: "default"), "Invalid image URL")
             }
         }
     }
