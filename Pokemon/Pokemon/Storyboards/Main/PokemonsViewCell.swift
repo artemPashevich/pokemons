@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PokemonCollectionViewCell: UICollectionViewCell {
+class PokemonsViewCell: UICollectionViewCell {
     
     @IBOutlet weak var pokemonNameLabel: UILabel!
     @IBOutlet weak var pokemonNumberLabel: UILabel!

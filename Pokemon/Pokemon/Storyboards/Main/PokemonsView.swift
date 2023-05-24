@@ -12,31 +12,31 @@ protocol PokemonsViewProtocol: AnyObject {
     func showLoading()
     func hideLoading()
     func showError(_ message: String)
+    func reloadData()
 }
 
-final class PokemonsViewController: UIViewController {
+final class PokemonsView: UIViewController {
 
     @IBOutlet var collectionPokemon: UICollectionView!
     let loadingIndicator = UIActivityIndicatorView(style: .large)
     
-    var pokemonsGroups: [Pokemon]?
-    let dataFetcherManager = DataFetcherManager()
+    private var viewModel: PokemonsViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLoadingIndicator()
-        fetchPokemons()
+        setup()
     }
     
-    func fetchPokemons() {
+    private func setup() {
         showLoading()
-        dataFetcherManager.getPokemonsFromAPI { [weak self] pokemons, error in
+        viewModel = PokemonsViewModel(dataFetcherManager: DataFetcherManager())
+        viewModel.fetchPokemons { [weak self] error in
             self?.hideLoading()
             if let error = error {
-                self?.showError(error.description)
+                self?.showError(error)
             } else {
-                self?.pokemonsGroups = pokemons
-                self?.collectionPokemon.reloadData()
+                self?.reloadData()
             }
         }
     }
@@ -49,23 +49,27 @@ final class PokemonsViewController: UIViewController {
     }
 }
 
-extension PokemonsViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension PokemonsView: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        pokemonsGroups?.count ?? 0
+        viewModel.numberOfPokemons
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.pokemonCell.value, for: indexPath) as? PokemonCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.pokemonCell.value, for: indexPath) as? PokemonsViewCell else {
             return UICollectionViewCell()
         }
-        if let pokemonName = pokemonsGroups?[indexPath.row].name {
+        if let pokemonName = viewModel.getPokemonName(at: indexPath.row) {
             cell.config(pokemonName, (indexPath.row + 1).description)
         }
         return cell
     }
 }
 
-extension PokemonsViewController: PokemonsViewProtocol {
+extension PokemonsView: PokemonsViewProtocol {
+    func reloadData() {
+        collectionPokemon.reloadData()
+    }
+    
     func showLoading() {
         loadingIndicator.startAnimating()
         view.isUserInteractionEnabled = false
@@ -83,20 +87,20 @@ extension PokemonsViewController: PokemonsViewProtocol {
     }
 }
 
-extension PokemonsViewController {
+extension PokemonsView {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let indexPaths = collectionPokemon.indexPathsForSelectedItems, let indexPath = indexPaths.first {
             if segue.identifier == Constants.segue.value {
-                if let destinationVC = segue.destination as? DetailsViewController {
+                if let destinationVC = segue.destination as? DetailsView {
                     destinationVC.id = indexPath.row + 1
-                    destinationVC.title = pokemonsGroups?[indexPath.row].name
+                    destinationVC.title = viewModel.getPokemonName(at: indexPath.row)
                 }
             }
         }
     }
 }
 
-private extension PokemonsViewController {
+private extension PokemonsView {
     enum Constants {
         case pokemonCell
         case segue

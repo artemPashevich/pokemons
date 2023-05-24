@@ -37,8 +37,8 @@ class NetworkManager: NetworkProtocol {
                         let error = "error decode json"
                         completion(nil, error)
                     }
-                case .failure(let error):
-                    completion(nil, error.errorDescription)
+                case .failure(_):
+                    completion(nil, "network error")
                 }
             }
     }
@@ -56,8 +56,8 @@ class NetworkManager: NetworkProtocol {
                         let error = "error decode json"
                         completion(nil, error)
                     }
-                case .failure(let error):
-                    completion(nil, error.errorDescription)
+                case .failure(_):
+                    completion(nil, "network error")
                 }
             }
     }

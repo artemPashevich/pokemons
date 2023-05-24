@@ -15,7 +15,7 @@ protocol DetailsViewProtocol: AnyObject {
     func showError(_ message: String)
 }
 
-final class DetailsViewController: UIViewController {
+final class DetailsView: UIViewController {
 
     @IBOutlet weak var weightLabel: UILabel!
     @IBOutlet weak var pokemonImageView: UIImageView!
@@ -24,7 +24,7 @@ final class DetailsViewController: UIViewController {
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     var id: Int = 0
-    let dataFetcherManager = DataFetcherManager()
+    private var viewModel: DetailsViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +32,7 @@ final class DetailsViewController: UIViewController {
     }
 }
 
-extension DetailsViewController: DetailsViewProtocol {
+extension DetailsView: DetailsViewProtocol {
     func showLoading() {
         loadingIndicator.startAnimating()
         view.isUserInteractionEnabled = false
@@ -47,9 +47,7 @@ extension DetailsViewController: DetailsViewProtocol {
         weightLabel.text = pokemon.weight
         typesLabel.text = pokemon.types
         heightLabel.text = pokemon.height
-        print(pokemon.height)
-        print(pokemon.imageUrlString)
-        dataFetcherManager.loadImageFromURL(urlString: pokemon.imageUrlString) { [weak self] image, error  in
+        viewModel.loadImage { [weak self] image in
             self?.pokemonImageView.image = image
         }
     }
@@ -61,15 +59,16 @@ extension DetailsViewController: DetailsViewProtocol {
     }
 }
 
-extension DetailsViewController {
+extension DetailsView {
     private func setup() {
         showLoading()
-        dataFetcherManager.getPokemonDetails(id: id) { [weak self] json, error, track  in
+        viewModel = DetailsViewModel(dataFetcherManager: DataFetcherManager())
+        viewModel.fetchPokemonDetails(id: id) { [weak self] error in
             self?.hideLoading()
-            if let json = json, let track = track {
-                self?.configureUI(with: CachedPokemonDetails(json: json, online: track))
-            } else if let error = error {
-                self?.showError(error.description)
+            if let error = error {
+                self?.showError(error)
+            } else if let cachedPokemonDetails = self?.viewModel.getCachedPokemonDetails() {
+                self?.configureUI(with: cachedPokemonDetails)
             }
         }
     }

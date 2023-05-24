@@ -62,7 +62,7 @@ final class DataFetcherManager {
     
     func loadImageFromURL(urlString: String?, completion: @escaping (UIImage?, String?) -> Void) {
         guard let urlString = urlString  else { return }
-        print("URL: " + urlString)
+
         if reachabilityManager.isNetworkAvailable {
             guard let url = URL(string: urlString) else { return }
             networkManager.loadImage(fromURL: url) { [weak self] image in
